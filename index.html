@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <style>
+      /* Resetting the browser stylesheet */
+      /* * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        overflow: hidden;
+        background-color: #000;
+        color: #fff;
+      } */
+      /* Position the mouse pointer and
+            the background image */
+
+      * {
+        cursor: none;
+      }
+      .main_box,
+      .img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      h1.find-dave {
+        font-family: "Oswald", sans-serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        color: #fff;
+        position: absolute;
+        top: 200px;
+        left: 200px;
+        z-index: 2000;
+      }
+
+      .img {
+        background-image: url("/spooky-album-lightbulb-image.jpeg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 0% -150px;
+        background-attachment: fixed;
+        background-origin: content-box;
+      }
+
+      .spotlight {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background-image: radial-gradient(
+          circle,
+          transparent 160px,
+          rgba(247, 19, 19, 0) 20px
+        );
+      }
+
+      .label {
+        font-family: "Oswald", sans-serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+        width: 100px;
+        height: 50px;
+        position: absolute;
+        top: -100px;
+        left: -100px;
+        background-color: transparent;
+        color: black;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="main_box">
+      <h1 class="find-dave">Find Dave</h1>
+      <div class="img"></div>
+      <div class="spotlight"></div>
+      <h2 class="label"></h2>
+    </div>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const spotlight = document.querySelector(".spotlight");
+        const label = document.querySelector(".label");
+
+        let spotlightSize = "transparent 15px, rgba(0, 0, 0, 1) 30px)";
+        spotlight.style.backgroundImage = `radial-gradient(circle at ${
+          window.innerWidth / 2
+        }px ${window.innerHeight / 2}px, ${spotlightSize}`;
+
+        window.addEventListener("mousemove", (e) => updateSpotlight(e));
+        window.addEventListener("mousemove", (e) => updateLabel(e));
+
+        function updateSpotlight(e) {
+          spotlight.style.backgroundImage = `radial-gradient(circle at ${
+            (e.pageX / window.innerWidth) * 100
+          }% ${(e.pageY / window.innerHeight) * 100}%, ${spotlightSize}`;
+          let X = e.offsetX;
+          let Y = e.offsetY;
+          label.style.left = X + 20 + "px";
+          label.style.top = Y + 20 + "px";
+          label.style.color = "white";
+        }
+
+        const msgs = [
+          "Nope",
+          "That's not Dave",
+          "Still no",
+          "Please try harder",
+        ];
+        let i = 0;
+        let message = msgs[i];
+        const refreshMessage = () => {
+          if (i === msgs.length) {
+            i = 0;
+          }
+          message = msgs[i];
+          i++;
+          return message;
+        };
+        setInterval(refreshMessage, 1000);
+
+        const updateLabel = (e) => {
+          let posX = e.pageX;
+          let posY = e.pageY;
+          if (posX > 828 && posX < 875 && posY > 274 && posY < 300) {
+            label.innerHTML = "You have found Dave!";
+            // } else if (posX > 844 && posX < 880 && posY > 320 && posY < 360) {
+            //   return;
+            //   label.innerHTML = "You have found Macken";
+            //   label.style.color = "black";
+            // } else if (posX > 1053 && posX < 1090 && posY > 275 && posY < 362) {
+            //   return (label.innerHTML = "You have found Waz");
+            // } else if (posX > 824 && posX < 864 && posY > 505 && posY < 570) {
+            //   return (label.innerHTML = "You have found ST");
+            // } else if (posX > 724 && posX < 829 && posY > 60 && posY < 106) {
+            //   label.innerHTML = "You have found Jack";
+          } else {
+            label.innerHTML = message;
+          }
+        };
+      });
+    </script>
+  </body>
+</html>

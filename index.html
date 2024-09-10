@@ -31,6 +31,9 @@
       }
       .main_box,
       .img {
+        max-width: 1300px;
+        width: 1300px;
+        min-width: 1300px;
         position: absolute;
         top: 0;
         left: 0;
@@ -38,11 +41,12 @@
         height: 100%;
       }
 
-      h1.find-dave {
+      #find-dave {
         font-family: "Oswald", sans-serif;
         font-optical-sizing: auto;
         font-style: normal;
         display: flex;
+        flex-direction: column;
         align-items: center;
         align-content: center;
         justify-content: center;
@@ -51,6 +55,14 @@
         top: 200px;
         left: 200px;
         z-index: 2000;
+        h1,
+        h2 {
+          margin: 0;
+          width: 100%;
+        }
+        h2 {
+          font-weight: 300;
+        }
       }
 
       .img {
@@ -91,7 +103,10 @@
 
   <body>
     <div class="main_box">
-      <h1 class="find-dave">Find Dave</h1>
+      <div id="find-dave">
+        <h2>Just</h2>
+        <h1><span id="find"></span> <br /><span id="dave"></span></h1>
+      </div>
       <div class="img"></div>
       <div class="spotlight"></div>
       <h2 class="label"></h2>
@@ -114,6 +129,7 @@
           spotlight.style.backgroundImage = `radial-gradient(circle at ${
             (e.pageX / window.innerWidth) * 100
           }% ${(e.pageY / window.innerHeight) * 100}%, ${spotlightSize}`;
+
           let X = e.offsetX;
           let Y = e.offsetY;
           label.style.left = X + 20 + "px";
@@ -129,6 +145,7 @@
         ];
         let i = 0;
         let message = msgs[i];
+
         const refreshMessage = () => {
           if (i === msgs.length) {
             i = 0;
@@ -139,10 +156,45 @@
         };
         setInterval(refreshMessage, 1000);
 
+        const words = ["Find", "Dave."];
+        const els = ["find", "dave"];
+
+        let h1 = "";
+        let d = 0;
+
+        const header = () => {
+          h1 = words[d];
+          const el = document.getElementById(els[d]);
+          console.log(el);
+          el.innerHTML = h1;
+          d++;
+        };
+
+        let w = 0;
+        let text = "Find Dave.";
+        const speed = 100;
+
+        function typeWriter() {
+          if (w < text.length) {
+            document.getElementById("find").innerHTML += text.charAt(w);
+            w++;
+            setTimeout(typeWriter, speed);
+          }
+        }
+
+        typeWriter();
+
+        // setInterval(header, 1000);
+
         const updateLabel = (e) => {
-          let posX = e.pageX;
-          let posY = e.pageY;
-          if (posX > 828 && posX < 875 && posY > 274 && posY < 300) {
+          // let posX = e.pageX;
+          // let posY = e.pageY;
+          const container = document.querySelector(".main_box");
+          const bound = container.getBoundingClientRect();
+          // const spot = spotlight.getBoundingClientRect();
+          let x = e.clientX - bound.x;
+          let y = e.clientY - bound.y;
+          if (x > 945 && x < 975 && y > 274 && y < 300) {
             label.innerHTML = "You have found Dave!";
             // } else if (posX > 844 && posX < 880 && posY > 320 && posY < 360) {
             //   return;
